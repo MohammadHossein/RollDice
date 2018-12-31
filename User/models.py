@@ -8,7 +8,7 @@ class User(models.Model):
     username = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    photo = models.FilePathField()
+    photo = models.FileField()
     games_count = models.IntegerField()
     email = models.EmailField()
     average_game_score = models.FloatField()

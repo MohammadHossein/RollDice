@@ -29,3 +29,13 @@ class UserLoginSerializer(serializers.ModelSerializer):
                 raise ValidationError('password cannot be empty')
         else:
             raise ValidationError('username cannot be empty')
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'photo', 'email', 'birth_date', 'sex', 'password')
+
+    def create(self, validated_data):
+        validated_data['password'] = hashlib.sha512(validated_data['password'])
+        return User.objects.create(**validated_data)
