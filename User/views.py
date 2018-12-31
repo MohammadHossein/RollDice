@@ -1,9 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
 # Create your views here.
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from User.serializers import UserLoginSerializer, UserRegisterSerializer
@@ -28,7 +30,7 @@ class Logout(APIView):
 
 class SignUp(APIView):
     def post(self, request):
-        serializer = UserRegisterSerializer(request.data)
+        serializer = UserRegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return HttpResponseRedirect(redirect_to='login')
+        return HttpResponseRedirect(redirect_to=reverse('login'))

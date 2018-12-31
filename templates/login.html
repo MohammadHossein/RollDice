@@ -46,7 +46,7 @@
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form role="form" method="post" action="{% url 'login' %}">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
@@ -62,7 +62,7 @@
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
                             <div class="form-group">
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                                <button class="btn btn-lg btn-success btn-block" type="submit">Login</button>
                             </div>
                             <div class="form-group">
                                 <a href="index.html" class=""> SignUp!</a>
@@ -81,7 +81,7 @@
             <h3 class="panel-title">Fill form...</h3>
         </div>
         <div class="panel-body">
-            <form role="form">
+            <form role="form" action="{% url 'signup' %}" method="post">
                 <fieldset>
                     <div class="form-group">
                         <input class="form-control" placeholder="First Name" name="first_name" type="text" autofocus>
@@ -96,7 +96,8 @@
                         <input class="form-control" name="photo" type="file">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" name="birth_date" type="text" id="datepicker">
+                        {#                        <input class="form-control" name="birth_date" type="text" id="datepicker">#}
+                        <input class="form-control" name="birth_date" type="date">
                     </div>
                     <div class="form-group">
                         <input class="form-control" placeholder="E-mail" name="email" type="email">
@@ -136,7 +137,7 @@
 <script src="{% static 'js/main.js' %}"></script>
 
 <script src="{% static 'datepicker/bootstrap-datepicker.js' %}"></script>
-<script src="{% static 'datepicker/bootstrap-datepicker.fa.js' %}"></script>
+{#<script src="{% static 'datepicker/bootstrap-datepicker.fa.js' %}"></script>#}
 
 
 <script src="{% static 'js/login.js' %}"></script>

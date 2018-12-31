@@ -13,12 +13,16 @@ class UserLoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
 
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
     def validate(self, data):
         username = data.get('username')
         password = data.get('password')
         if username:
             if password:
-                hash_pass = hashlib.sha512(password)
+                hash_pass = hashlib.sha512(bytes(password, 'utf-8')).hexdigest()
                 try:
                     User.objects.get(password=hash_pass, username=username)
                 except Exception as e:
@@ -37,5 +41,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fields = ('username', 'first_name', 'last_name', 'photo', 'email', 'birth_date', 'sex', 'password')
 
     def create(self, validated_data):
-        validated_data['password'] = hashlib.sha512(validated_data['password'])
+        logger.log(logging.INFO, validated_data['password'])
+        validated_data['password'] = hashlib.sha512(bytes(validated_data['password'], 'utf-8')).hexdigest()
         return User.objects.create(**validated_data)
