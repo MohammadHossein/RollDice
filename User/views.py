@@ -10,7 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from User.models import User
-from User.permissions import IsAuthenticated
+from User.permissions import IsAuthenticated, Authenticate
 from User.serializers import UserLoginSerializer, UserRegisterSerializer
 
 
@@ -47,7 +47,7 @@ class SignUp(APIView):
 
 
 class Test(APIView):
-    permission_classes = (IsAuthenticated,)
 
+    permission_classes = (IsAuthenticated,)
     def get(self, request):
         return Response("Hello world")
