@@ -12,3 +12,4 @@ class User(djangoUser):
     average_user_score = models.FloatField(null=True)
     birth_date = models.DateField()
     sex = models.BooleanField()  # true -> male, false -> female
+    isAdmin = models.BooleanField(default=False)

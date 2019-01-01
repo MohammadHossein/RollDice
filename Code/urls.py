@@ -18,8 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+onlineUsers = set()
+
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('users/', include('User.urls'))
+                  path('users/', include('User.urls')),
+                  path('', include('Final.urls')),
               ] \
               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

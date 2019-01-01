@@ -10,7 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from User.models import User
-from User.permissions import IsAuthenticated, Authenticate
+from User.permissions import IsAuthenticated
 from User.serializers import UserLoginSerializer, UserRegisterSerializer
 
 
@@ -34,8 +34,14 @@ class Login(ObtainAuthToken):
             return Response({'message': 'login failed!'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class Logout(APIView):
-    pass
+class LogOut(APIView):
+    @staticmethod
+    def get(request):
+        try:
+            Token.objects.get(user=request.user).delete()
+            return Response({'message': 'You have successfully logged out!'})
+        except:
+            return Response({'message': 'Error Logout'})
 
 
 class SignUp(APIView):
@@ -47,7 +53,7 @@ class SignUp(APIView):
 
 
 class Test(APIView):
-
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         return Response("Hello world")
