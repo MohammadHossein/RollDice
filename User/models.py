@@ -7,9 +7,9 @@ from django.db import models
 
 class User(djangoUser):
     photo = models.FileField(null=True)
-    games_count = models.IntegerField(null=True)
-    average_game_score = models.FloatField(null=True)
-    average_user_score = models.FloatField(null=True)
+    games_count = models.IntegerField(null=True,default=0)
+    average_game_score = models.FloatField(null=True,default=0)
+    average_user_score = models.FloatField(null=True,default=0)
     birth_date = models.DateField()
     sex = models.BooleanField()  # true -> male, false -> female
     isAdmin = models.BooleanField(default=False)

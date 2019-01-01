@@ -1,6 +1,5 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import BasePermission
 
 from Code.urls import onlineUsers
@@ -29,7 +28,9 @@ class Authenticate(BaseAuthentication):
         try:
             user_id = Token.objects.get(key=cookie).user_id
             user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            raise AuthenticationFailed('No such user')
+        # except User.DoesNotExist:
+        #     raise AuthenticationFailed('No such user')
+        except Exception:
+            return None
         onlineUsers.add(user)
         return user, user.isAdmin
