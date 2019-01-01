@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% block header %}
+    <h1>Create your own game!</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="panel-body col-sm-7">
+        <form action="{% url 'create_game' %}" method="post">
+            <div class="form-group">
+                <label for="max-score">Max Score</label>
+                <input type="text" class="form-control" id="max-score" name="max_score" placeholder="Max Score">
+            </div>
+            <div class="form-group">
+                <label for="hold">Hold</label>
+                <input type="text" class="form-control" id="hold" name="hold" placeholder="Hold">
+                <small id="hold-help" class="form-text text-muted">Single number or comma separated numbers.(Between 1 and 6) </small>
+            </div>
+            <div class="form-group">
+                <label for="max-roll">Max Roll</label>
+                <input type="text" class="form-control" id="max-roll" name="max_roll" placeholder="Max Roll">
+            </div>
+            <div class="form-check">
+                <div class="col-sm-3">
+                    <input class="form-check-input" type="radio" name="dice_count" id="number-of-dice" value="1">
+                    <label class="form-check-label" for="number-of-dice">
+                        1
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-check-input" type="radio" name="dice_count" id="number-of-dice" value="2">
+                    <label class="form-check-label" for="number-of-dice">
+                        2
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-check-input" type="radio" name="dice_count" id="number-of-dice" value="3">
+                    <label class="form-check-label" for="number-of-dice">
+                        3
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-check-input" type="radio" name="dice_count" id="number-of-dice" value="4">
+                    <label class="form-check-label" for="number-of-dice">
+                        4
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock body %}

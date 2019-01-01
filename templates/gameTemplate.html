@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+    <link href="{% static 'game/css/main.css' %}" rel="stylesheet">
+    {#    <link href="static/css/all.css" rel="stylesheet">#}
+    {#    <link href="static/css/brands.css" rel="stylesheet">#}
+    {#    <link href="static/css/fontawesome.css" rel="stylesheet">#}
+    {#    <link href="static/css/regular.css" rel="stylesheet">#}
+    <link href="{% static 'font-awesome/css/font-awesome.css' %}">
+
+</head>
+<body>
+<div class="main">
+    <div class="playerCard itsTurn"></div>
+    <div class="playerCard playerCard2"></div>
+
+    <div class="player player1">
+        <div class="playerName">
+            <label>Player 1</label>
+            <div class="turn" id="p1turn">
+                <i class="fa fa-circle"></i>
+            </div>
+        </div>
+
+        <div class="score">
+            0
+        </div>
+        <div class="totalScore">
+            Current<br/><span class="totalScoreNumber">0</span>
+        </div>
+    </div>
+    <div class="game">
+        <div>
+            <button id="newGame">
+                <i class="far fa-plus-circle"></i>New Game
+            </button>
+        </div>
+        <div class="image">
+            <div>
+                <img src="{% static 'game/img/dice-2.png' %}" id="dice1" width="100" height="100">
+            </div>
+            <div id="secondDice">
+                <img src="{% static 'game/img/dice-2.png' %}" id="dice2" width="100" height="100">
+            </div>
+        </div>
+        <div>
+            <div class="m-5">
+                <button id="rollDice"><i class="far fa-sync"></i>Roll Dice</button>
+            </div>
+            <div class="m-5">
+                <button id="hold"><i class="far fa-pause"></i>Hold</button>
+            </div>
+            <!--<input type="text" id="maxScore" placeholder="Max Score">-->
+            <div id="maxScore" class="m-5">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="player player2">
+        <div class="playerName">
+            <label>Player 2</label>
+            <div class="turn" id="p2turn">
+                <i class="fa fa-circle hide-dot"></i>
+            </div>
+        </div>
+
+        <div class="score">
+            0
+        </div>
+        <div class="totalScore">
+            Current<br/><span class="totalScoreNumber">0</span>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'jquery/jquery.js'%}" type="text/javascript"></script>
+<script src="{% static 'game/js/main.js' %}" type="text/javascript"></script>
+
+</body>
+</html>
