@@ -1,0 +1,158 @@
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: url("../img/back.jpg") no-repeat fixed center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    font-family: 'Comic Sans MS', serif;
+}
+
+.main {
+    height: 80%;
+    display: flex;
+    justify-content: space-around;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 5%;
+    position: relative;
+}
+
+.playerCard {
+    left: 0;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: #f1f1f1;
+    float: left;
+    display: inline-block;
+    z-index: 0;
+    /*box-shadow: 10px 10px 5px gray;*/
+    box-shadow: 1px 1px 20px 3px gray;
+}
+
+.playerCard2 {
+    background-color: #f1f1f1;
+    right: 0;
+    left: auto;
+    box-shadow: 10px 1px 20px 3px gray;
+
+}
+.itsTurn{
+    background: #c4c4c4;
+
+}
+
+.game {
+    top: 10%;
+    left: 40%;
+    right: 40%;
+    bottom: 10%;
+    position: absolute;
+    z-index: 2;
+    /*border: 3px yellow solid;*/
+    text-align: center;
+}
+
+.player {
+    position: absolute;
+    z-index: 2;
+    /*margin: 10px;*/
+    /*border: 3px blue solid;*/
+}
+
+.player1 {
+    top: 10%;
+    left: 10%;
+    right: 60%;
+    bottom: 10%;
+}
+
+.player2 {
+    top: 10%;
+    left: 60%;
+    right: 10%;
+    bottom: 10%;
+}
+
+div {
+    /*border: 3px tomato solid;*/
+}
+
+.turn {
+    display: inline-block;
+    position: absolute;
+    right: 15%;
+    color: red;
+}
+
+.score {
+    margin: 40%;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 100;
+    font-family: 'Open Sans', sans-serif;
+    color: tomato;
+
+}
+
+.totalScore {
+    margin-top: 10%;
+    margin-right: 35%;
+    margin-left: 35%;
+    text-align: center;
+    font-size: 20px;
+    background-color: tomato;
+
+}
+
+.playerName {
+    font-size: 30px;
+    margin-top: 10%;
+    margin-left: 35%;
+    margin-right: 25%;
+}
+
+.totalScoreNumber {
+    color: white;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    margin-top: 10%;
+    /*border: 3px tomato solid;*/
+    z-index: 10;
+}
+button {
+    background: Transparent no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    margin-top: 15%;
+    font-size: 20px;
+}
+
+input {
+    margin-top: 15%;
+    text-align: center;
+}
+
+i {
+    margin: 5px;
+}
+
+.hide-dot{
+    display: none !important;
+}
+.m-5{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
