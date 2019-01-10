@@ -1,5 +1,6 @@
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer,BaseSerializer
 
 from Final.models import Game
 
@@ -19,4 +20,10 @@ class GameSerializer(ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('max_score', 'dice_count', 'hold', 'max_roll')
+        fields = ('max_score', 'dice_count', 'hold', 'max_roll','name')
+
+
+class GameActionSerializer(BaseSerializer):
+    action = serializers.NullBooleanField(required=True)
+    game_id = serializers.CharField(max_length=100)
+

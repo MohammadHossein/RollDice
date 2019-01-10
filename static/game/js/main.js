@@ -1,10 +1,7 @@
 let turn = 1;
-let score6 = 0;
-let maxScore = null;
-let twoDice = true;
+
 $(document).ready(function () {
     // $('#maxScore').hide();
-    $('#newGame').on('click', newGame);
     newGame();
     $('#rollDice').on('click', rollDice);
     $('#hold').on('click', hold);
@@ -12,7 +9,9 @@ $(document).ready(function () {
 
 
 function newGame() {
-    maxScore = null;
+    for (let i = 1; i <= dice_count; i++) {
+        $(`#dice${i}`).show()
+    }
     let playerCard = $('.player');
     let currentScore = playerCard.find('.totalScoreNumber');
     let score = playerCard.find('.score');
@@ -26,22 +25,6 @@ function newGame() {
     name2.css('color', 'black');
 
     turn = 1;
-    while (maxScore == null) {
-        maxScore = prompt('Enter max score of game!', "100");
-        if (maxScore != null) {
-            maxScore = parseInt(maxScore);
-            if (isNaN(maxScore) || maxScore < 1)
-                maxScore = null;
-        }
-    }
-    $('#maxScore').html(`First person who earn ${maxScore} points, wins!`);
-
-    twoDice = confirm('Play with 2 Dice or one?(Yes for 2 dice)');
-    if (!twoDice) {
-        $('#secondDice').hide()
-    } else {
-        $('#secondDice').show()
-    }
 
 }
 
@@ -57,42 +40,32 @@ function changeTrun() {
 }
 
 function rollDice() {
-    let random1 = randomDice();
-    let random2 = randomDice();
-    $('#dice1').attr('src', `/static/game/img/dice-${random1}.png`);
-    if (twoDice) {
-        $('#dice2').attr('src', `/static/game/img/dice-${random2}.png`);
-        if (random1 === 6 && random2 === 6)
-            score6 += 2;
-        else if (random1 === 6)
-            score6++;
-        else if (random2 === 6)
-            score6++;
-        else
-            score6 = 0
-    } else {
-        random2 = 0;
-        if (random1 === 6)
-            score6++
+    let change_turn = false;
+    let current = 0;
+    for (let i = 1; i <= dice_count; i++) {
+        let random = randomDice();
+        $(`#dice${i}`).attr('src', `/static/game/img/dice-${random}.png`);
+        current += random;
+        if (hold_number.includes(random)) {
+            change_turn = true;
+        }
     }
-
-    if (random1 === 1 || random2 === 1 || score6 >= 2) {
+    if (change_turn) {
         score()
     } else {
-        score(random1, random2)
+        score(current)
     }
 }
 
-function score(num1, num2) {
+function score(num1) {
     let score = $(`\.player${turn}`).find('.totalScoreNumber');
     if (num1 === undefined) {
         changeTrun();
         score.html(0);
-        score6 = 0;
         return;
     }
     // alert(num1 + ' ' + num2);
-    let value = parseInt(score.html()) + num1 + num2;
+    let value = parseInt(score.html()) + num1;
     score.html(value.toString())
 }
 

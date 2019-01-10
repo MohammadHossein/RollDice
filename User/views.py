@@ -30,7 +30,7 @@ class Login(ObtainAuthToken):
         user = authenticate(request, username=username, password=password)
         if user:
             token, created = Token.objects.get_or_create(user=User.objects.get(username=username))
-            response = HttpResponseRedirect(redirect_to=reverse('test'))
+            response = HttpResponseRedirect(redirect_to=reverse('homepage'))
             response.set_cookie('token', token.key, 65435, 3000, '/')
             return response
         else:

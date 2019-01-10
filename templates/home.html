@@ -8,7 +8,7 @@
     <div class="col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-sliders fa-fw"></i> Games
+                <i class="fa fa-sliders fa-fw"></i> Games News
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -50,6 +50,26 @@
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-sliders fa-fw"></i> Games
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <!-- slider -->
+                <div class="list-group">
+                    {% for game in games %}
+                        <a href="{% url 'game_view' %}?id={{ game.id }}"
+                           class="list-group-item list-group-item-action ">
+                            {{ game.name }}
+                        </a>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
     </div>
     <!-- /.col-lg-8 -->
     <div class="col-lg-4">

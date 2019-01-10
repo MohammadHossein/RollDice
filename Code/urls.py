@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 onlineUsers = set()
+games = {}
 
 urlpatterns = [
                   path('admin/', admin.site.urls),

@@ -1,10 +1,15 @@
+import json
+import random
+
 from django.shortcuts import render
 # Create your views here.
+from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Code.urls import onlineUsers
-from Final.models import Game
+from Code.urls import onlineUsers, games
+from Final.models import Game, GameData
 from Final.serializers import GameSerializer
 from User.permissions import IsAuthenticated, Authenticate
 
@@ -14,7 +19,8 @@ class HomePage(APIView):
 
     @staticmethod
     def get(request):
-        return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user})
+        return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user,
+                                             'games': Game.objects.all()})
 
 
 class CreateGame(APIView):
@@ -36,9 +42,54 @@ class CreateGame(APIView):
 
 
 class GameView(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     authentication_classes = (Authenticate,)
 
     @staticmethod
-    def get(request):
-        return render(request, 'gameTemplate.html')
+    def get(request: Request):
+        game_id = request.query_params.get('id')
+        if game_id:
+            game = Game.objects.get(id=game_id)
+            new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
+            games[new_game.id] = new_game
+            return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id})
+        raise NotFound('Game not found!')
+
+    @staticmethod
+    def post(request: Request):
+        action = request.data.get('action')
+        game_id = request.data.get('game_id')
+        if not game_id:
+            raise ValidationError('game_id not found')
+        if not action:
+            raise ValidationError('action not found')
+        game: GameData = games.get(game_id)
+        if not game:
+            raise NotFound('game not found')
+        if action == 'roll-dice':
+            randoms = []
+            change_turn = False
+            for i in range(game.dice_count):
+                rand = random.randrange(1, 7)
+                change_turn = change_turn or (rand in game.hold)
+                randoms.append(rand)
+            if change_turn:
+                game.turn = not game.turn
+                game.player1_current = 0
+                game.player2_current = 0
+            game.dices = randoms
+            if game.turn:
+                game.player1_current += sum(randoms)
+            else:
+                game.player2_current += sum(randoms)
+        elif action == 'hold':
+            game.player1_total += game.player1_current
+            game.player1_current = 0
+            game.player2_total += game.player2_current
+            game.player2_current = 0
+            game.turn = not game.turn
+            if game.player1_total >= game.max_score:
+                game.winner = True
+            if game.player2_total >= game.max_score:
+                game.winner = False
+        return Response(json.dumps(game.__dict__))
