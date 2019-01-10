@@ -48,11 +48,12 @@ class GameView(APIView):
     @staticmethod
     def get(request: Request):
         game_id = request.query_params.get('id')
+        my_turn = request.query_params.get('p')
         if game_id:
             game = Game.objects.get(id=game_id)
             new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
             games[new_game.id] = new_game
-            return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id})
+            return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id, 'myTurn': my_turn})
         raise NotFound('Game not found!')
 
     @staticmethod
@@ -78,10 +79,11 @@ class GameView(APIView):
                 game.player1_current = 0
                 game.player2_current = 0
             game.dices = randoms
-            if game.turn:
-                game.player1_current += sum(randoms)
-            else:
-                game.player2_current += sum(randoms)
+            if not change_turn:
+                if game.turn:
+                    game.player1_current += sum(randoms)
+                else:
+                    game.player2_current += sum(randoms)
         elif action == 'hold':
             game.player1_total += game.player1_current
             game.player1_current = 0
