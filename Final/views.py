@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from Code.urls import onlineUsers, games
+from Code.urls import onlineUsers, games, non_started_games
 from Final.models import Game, GameData
 from Final.serializers import GameSerializer
 from User.permissions import IsAuthenticated, Authenticate
@@ -48,13 +48,22 @@ class GameView(APIView):
     @staticmethod
     def get(request: Request):
         game_id = request.query_params.get('id')
-        my_turn = request.query_params.get('p')
-        if game_id:
-            game = Game.objects.get(id=game_id)
-            new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
-            games[new_game.id] = new_game
-            return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id, 'myTurn': my_turn})
-        raise NotFound('Game not found!')
+        # my_turn = request.query_params.get('p')
+        if not game_id:
+            raise NotFound('Game not found!')
+        game = Game.objects.get(id=game_id)
+        if not game:
+            raise NotFound('Game not found!')
+        if len(non_started_games) > 0:
+            cur_game = non_started_games.pop()
+            cur_game.turn = True
+            return render(request, 'gameTemplate.html',
+                          {'game': game, 'game_id': cur_game.id, 'myTurn': 2})
+
+        new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
+        games[new_game.id] = new_game
+        non_started_games.append(new_game)
+        return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id, 'myTurn': 1})
 
     @staticmethod
     def post(request: Request):

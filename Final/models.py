@@ -26,7 +26,7 @@ class GameData:
         self.id = ''.join(random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=32))
         self.dices = []
         self.dice_count = dice_count
-        self.turn = True
+        self.turn = False
         self.max_score = max_score
         self.player1_current = 0
         self.player1_total = 0

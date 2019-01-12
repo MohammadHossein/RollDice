@@ -43,7 +43,8 @@ body {
     box-shadow: 10px 1px 20px 3px gray;
 
 }
-.itsTurn{
+
+.itsTurn {
     background: #c4c4c4;
 
 }
@@ -129,6 +130,7 @@ div {
     /*border: 3px tomato solid;*/
     z-index: 10;
 }
+
 button {
     background: Transparent no-repeat;
     border: none;
@@ -147,12 +149,16 @@ i {
     margin: 5px;
 }
 
-.hide-dot{
+.hide-dot {
     display: none !important;
 }
-.m-5{
+
+.m-5 {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 
+#player-turn {
+    display: none;
+}

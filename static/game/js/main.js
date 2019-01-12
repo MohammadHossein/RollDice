@@ -94,7 +94,7 @@ function showData(data) {
         name.css('color', 'red');
         return;
     }
-    console.log(data);
+    // console.log(data);
     if (data.dices.length > 0)
         for (let i = 1; i <= data.dice_count; i++) {
             let number = data.dices[i - 1];
@@ -111,8 +111,12 @@ function showData(data) {
     let player2 = $('.player2');
     player2.find('.score').html(data.player2_total);
     player2.find('.totalScoreNumber').html(data.player2_current);
-    if(myTurn !== turn){
-
+    if (myTurn !== turn) {
+        $('#player-turn').show();
+        $('#game-button').hide();
+    } else {
+        $('#player-turn').hide();
+        $('#game-button').show();
     }
 }
 
@@ -131,7 +135,7 @@ function update(action) {
     })
 }
 
-function interval(){
+function interval() {
     update();
-    setTimeout(interval,3000);
+    setTimeout(interval, 1000);
 }

@@ -20,6 +20,7 @@ from django.urls import path, include
 
 onlineUsers = set()
 games = {}
+non_started_games = []
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
