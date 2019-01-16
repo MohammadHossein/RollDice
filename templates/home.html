@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block header %}
     <h1 class="page-header">HomePage</h1>
 {% endblock header %}
@@ -15,25 +16,24 @@
                 <!-- slider -->
                 <div id="slider-homepage" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
-                    <ol class="carousel-indicators">
+                    <ul class="carousel-indicators">
                         <li data-target="#slider-homepage" data-slide-to="0" class="active"></li>
                         <li data-target="#slider-homepage" data-slide-to="1"></li>
                         <li data-target="#slider-homepage" data-slide-to="2"></li>
-                    </ol>
+                    </ul>
 
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <p>first</p>
+                            <p>{{ bestGame }}</p>
+                        </div>
+                        <div class="item">
+                            <p>{{ maxOnline }}</p>
+                        </div>
+                        <div class="item">
+                            <p>{{ bestNewGame }}</p>
                         </div>
 
-                        <div class="item">
-                            <p>second</p>
-                        </div>
-
-                        <div class="item">
-                            <p>third</p>
-                        </div>
                     </div>
 
                     <!-- Left and right controls -->
@@ -84,8 +84,8 @@
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <i class="fa fa-user fa-fw"></i> {{ onlineUser.username }}
-{#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
-{#                                    </span>#}
+                            {#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
+                            {#                                    </span>#}
                         </a>
                     </div>
                     <!-- /.list-group -->
@@ -97,4 +97,32 @@
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-4 -->
+{% endblock %}
+
+{% block script %}
+    <script src="{% static '/angular/angular.js' %}"></script>
+    <script type="text/javascript">
+        {#var data_slider = [#}
+        {#    {#}
+        {#        index: 0,#}
+        {#        data: 'asghar'#}
+        {#    },#}
+        {#    {#}
+        {#        index: 1,#}
+        {#        data: 'mammad'#}
+        {#    },#}
+        {#];#}
+        {#var app = angular.module('sliderApp', []);#}
+        {#app.config(['$interpolateProvider', function ($interpolateProvider) {#}
+        {#    $interpolateProvider.startSymbol('{a');#}
+        {#    $interpolateProvider.endSymbol('a}');#}
+        {#}])
+        ;
+        #}
+        {#app.controller('slider_controller', function () {#}
+        {#    this.slider_data = data_slider;#}
+        {#})
+        ;
+        #}
+    </script>
 {% endblock %}

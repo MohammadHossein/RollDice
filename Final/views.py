@@ -4,13 +4,14 @@ import random
 from django.shortcuts import render
 # Create your views here.
 from rest_framework.exceptions import NotFound, ValidationError
+from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from Code.urls import onlineUsers, games, non_started_games
 from Final.models import Game, GameData
-from Final.serializers import GameSerializer
+from Final.serializers import GameSerializer, GameRateSerializer, GamePlayedCountSerializer
 from User.permissions import IsAuthenticated, Authenticate
 
 
@@ -21,25 +22,9 @@ class HomePage(APIView):
     @staticmethod
     def get(request):
         return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user,
-                                             'games': Game.objects.all()})
-
-
-class CreateGame(APIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (Authenticate,)
-
-    @staticmethod
-    def get(request):
-        return render(request, 'game.html', {'onlineUsers': onlineUsers, 'curUser': request.user})
-
-    @staticmethod
-    def post(request):
-        serializer = GameSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        game = Game(**serializer.validated_data)
-        game.user = request.user
-        game.save()
-        return Response('Done!')
+                                             'games': Game.objects.all(),
+                                             'bestGame': Game.objects.values('rate', 'name').order_by('-rate')[0]
+            , 'maxOnline': 0, 'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0]})
 
 
 class GameView(APIView):
@@ -106,3 +91,45 @@ class GameView(APIView):
             if game.player2_total >= game.max_score:
                 game.winner = False
         return Response(json.dumps(game.__dict__))
+
+
+class CreateGame(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (Authenticate,)
+
+    @staticmethod
+    def get(request):
+        return render(request, 'game.html', {'onlineUsers': onlineUsers, 'curUser': request.user})
+
+    @staticmethod
+    def post(request):
+        serializer = GameSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        game = Game(**serializer.validated_data)
+        game.user = request.user
+        game.save()
+        return Response('Done!')
+
+
+class RateAPI(ListAPIView):
+    serializer_class = GameRateSerializer
+    model = Game
+
+    def get_queryset(self):
+        return Game.objects.values('rate', 'name')
+
+
+class GamePlayedCountAPI(ListAPIView):
+    serializer_class = GamePlayedCountSerializer
+    model = Game
+
+    def get_queryset(self):
+        return Game.objects.values('play_count', 'name')
+
+
+class BestGameAddedAPI(ListAPIView):
+    serializer_class = GameSerializer
+    model = Game
+
+    def get_queryset(self):
+        return Game.objects.all().order_by('creation_date', 'rate')

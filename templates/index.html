@@ -15,7 +15,7 @@
     <title>IE Final Project</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="{% static 'metisMenu/metisMenu.min.css' %}" rel="stylesheet">
@@ -96,18 +96,18 @@
                     <li>
                         <a href="{% url 'game_view' %}"><i class="fa fa-gamepad fa-fw"></i> Games</a>
                     </li>
-{#                    <li>#}
-{#                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>#}
-{#                        <ul class="nav nav-second-level">#}
-{#                            <li>#}
-{#                                <a href="flot.html">Flot Charts</a>#}
-{#                            </li>#}
-{#                            <li>#}
-{#                                <a href="morris.html">Morris.js Charts</a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                        <!-- /.nav-second-level -->#}
-{#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>#}
+                    {#                        <ul class="nav nav-second-level">#}
+                    {#                            <li>#}
+                    {#                                <a href="flot.html">Flot Charts</a>#}
+                    {#                            </li>#}
+                    {#                            <li>#}
+                    {#                                <a href="morris.html">Morris.js Charts</a>#}
+                    {#                            </li>#}
+                    {#                        </ul>#}
+                    {#                        <!-- /.nav-second-level -->#}
+                    {#                    </li>#}
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -139,6 +139,7 @@
 
 <!-- jQuery -->
 <script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script src="{% static 'popper/popper.min.js' %}"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
@@ -148,6 +149,9 @@
 
 
 <!-- Custom Theme JavaScript -->
+    {% block script %}
+
+    {% endblock %}
 <script src="{% static 'js/main.js' %}"></script>
 
 </body>
