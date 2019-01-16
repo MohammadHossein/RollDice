@@ -10,6 +10,7 @@ $(document).ready(function () {
         update('hold')
     });
     interval();
+
 });
 
 function newGame() {

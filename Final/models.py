@@ -23,6 +23,22 @@ class Game(models.Model):
     average_score_person_count = models.IntegerField(default=0)
 
 
+class GameComment(models.Model):
+    text = models.TextField(default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userCommentGame')
+    accept = models.BooleanField(default=False)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gameComment')
+    rate = models.FloatField(default=0)
+
+
+class UserComment(models.Model):
+    text = models.TextField(default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userCommentUser')
+    accept = models.BooleanField(default=False)
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userComment')
+    rate = models.FloatField(default=0)
+
+
 class GameData:
     def __init__(self, dice_count, max_score, hold):
         self.id = ''.join(random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=32))

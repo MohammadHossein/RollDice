@@ -5,6 +5,23 @@
 
 {% block body %}
     <div class="panel-body col-sm-7">
+        <div>
+            <input type="hidden" name="rate"/>
+            <form method="post" action="{% url 'comment' %}">
+                <div class="form-group" id="rating">
+                    <label for="rating">Rating</label>
+                </div>
+                <input type="hidden" name="game" id="game-id">
+                <input type="hidden" name="user" value="1">
+                <div class="form-group">
+                    <label for="comment-input">Comment</label>
+                    <input type="text" class="form-control" name="text" id="comment-input">
+                </div>
+                <button type="submit" class="btn btn-primary">Send!</button>
+
+            </form>
+        </div>
+
         <form action="{% url 'create_game' %}" method="post">
             <div class="form-group">
                 <label for="game-name">Name</label>
@@ -17,7 +34,9 @@
             <div class="form-group">
                 <label for="hold">Hold</label>
                 <input type="text" class="form-control" id="hold" name="hold" placeholder="Hold">
-                <small id="hold-help" class="form-text text-muted">Single number or comma separated numbers.(Between 1 and 6) </small>
+                <small id="hold-help" class="form-text text-muted">Single number or comma separated numbers.(Between 1
+                    and 6)
+                </small>
             </div>
             <div class="form-group">
                 <label for="max-roll">Max Roll</label>
@@ -53,3 +72,21 @@
         </form>
     </div>
 {% endblock body %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const game_id = urlParams.get('id');
+            $('#game-id').val(game_id)
+        })
+        $("#rating").emojiRating({
+            fontSize: 32,
+            emoji: 'poo',
+            inputName: 'rate',
+            onUpdate: function (count) {
+
+            }
+        });
+    </script>
+{% endblock %}

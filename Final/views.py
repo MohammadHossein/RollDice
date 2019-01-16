@@ -4,14 +4,14 @@ import random
 from django.shortcuts import render
 # Create your views here.
 from rest_framework.exceptions import NotFound, ValidationError
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from Code.urls import onlineUsers, games, non_started_games
-from Final.models import Game, GameData
-from Final.serializers import GameSerializer, GameRateSerializer, GamePlayedCountSerializer
+from Final.models import Game, GameData, GameComment
+from Final.serializers import GameSerializer, GameRateSerializer, GamePlayedCountSerializer, GameCommentSerializer
 from User.permissions import IsAuthenticated, Authenticate
 
 
@@ -23,8 +23,9 @@ class HomePage(APIView):
     def get(request):
         return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user,
                                              'games': Game.objects.all(),
-                                             'bestGame': Game.objects.values('rate', 'name').order_by('-rate')[0]
-            , 'maxOnline': 0, 'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0]})
+                                             'bestGame': Game.objects.values('rate', 'name').order_by('-rate')[0],
+                                             'maxOnline': 0,
+                                             'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0]})
 
 
 class GameView(APIView):
@@ -133,3 +134,9 @@ class BestGameAddedAPI(ListAPIView):
 
     def get_queryset(self):
         return Game.objects.all().order_by('creation_date', 'rate')
+
+
+class CommentAPI(ListCreateAPIView):
+    authentication_classes = (Authenticate,)
+    serializer_class = GameCommentSerializer
+    queryset = GameComment.objects.all()

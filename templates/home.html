@@ -25,13 +25,45 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <p>{{ bestGame }}</p>
+                            <div class="panel panel-green">
+                                <div class="panel-heading">
+                                    BestGame
+                                </div>
+                                <div class="panel-body">
+                                    <p>{{ bestGame.name }}</p>
+                                    <p>{{ bestGame.rate }}</p>
+                                </div>
+                                <div class="panel-footer"></div>
+                            </div>
                         </div>
                         <div class="item">
-                            <p>{{ maxOnline }}</p>
+                            <div class="item active">
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        BestGame
+                                    </div>
+                                    <div class="panel-body">
+                                        <p>{{ maxOnline }}</p>
+{#                                        <p>{{ bestGame.rate }}</p>#}
+                                    </div>
+                                    <div class="panel-footer"></div>
+                                </div>
+                            </div>
+{#                            <p>{{ maxOnline }}</p>#}
                         </div>
                         <div class="item">
-                            <p>{{ bestNewGame }}</p>
+                            <div class="item active">
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        BestNewGame
+                                    </div>
+                                    <div class="panel-body">
+                                        <p>{{ bestNewGame.name }}</p>
+                                        <p>{{ bestNewGame.rate }}</p>
+                                    </div>
+                                    <div class="panel-footer"></div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
