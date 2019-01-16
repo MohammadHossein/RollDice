@@ -16,6 +16,7 @@ from User.permissions import IsAuthenticated, Authenticate
 
 class HomePage(APIView):
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (Authenticate,)
 
     @staticmethod
     def get(request):
@@ -50,20 +51,21 @@ class GameView(APIView):
         game_id = request.query_params.get('id')
         # my_turn = request.query_params.get('p')
         if not game_id:
-            raise NotFound('Game not found!')
+            return render(request, 'game_list.html')
+            # raise NotFound('Game not found!')
         game = Game.objects.get(id=game_id)
         if not game:
             raise NotFound('Game not found!')
         if len(non_started_games) > 0:
             cur_game = non_started_games.pop()
             cur_game.turn = True
-            return render(request, 'gameTemplate.html',
+            return render(request, 'game_main.html',
                           {'game': game, 'game_id': cur_game.id, 'myTurn': 2})
 
         new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
         games[new_game.id] = new_game
         non_started_games.append(new_game)
-        return render(request, 'gameTemplate.html', {'game': game, 'game_id': new_game.id, 'myTurn': 1})
+        return render(request, 'game_main.html', {'game': game, 'game_id': new_game.id, 'myTurn': 1})
 
     @staticmethod
     def post(request: Request):

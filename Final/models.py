@@ -11,6 +11,7 @@ from User.models import User
 class Game(models.Model):
     name = models.CharField(max_length=100, default='')
     rate = models.FloatField(default=0)
+
     creation_date = models.DateTimeField(auto_now=True)
     max_score = models.IntegerField(default=0)
     dice_count = models.IntegerField(default=1)
@@ -19,6 +20,8 @@ class Game(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='createdBy')
     play_count = models.IntegerField(default=0)
     average_score = models.FloatField(default=0)
+
+
 
 
 class GameData:

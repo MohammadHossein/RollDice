@@ -127,8 +127,9 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
-        'User.permissions.Authenticate',
-    )
+        # 'User.permissions.Authenticate',
+    ),
+    'EXCEPTION_HANDLER': 'User.permissions.custom_exception_handler',
 }
 
 # LOGGING = {
