@@ -10,8 +10,33 @@ $(document).ready(function () {
         update('hold')
     });
     interval();
+    const urlParams = new URLSearchParams(window.location.search);
+    const game_idd = urlParams.get('id');
+    $('#game-id').val(game_idd);
+
+    //
+    // $('#comment-modal').on('shown.bs.modal', function () {
+    //     $('#myInput').focus()
+    // })
+    // $("#rating-user").emojiRating({
+    //     fontSize: 32,
+    //     emoji: 'poo',
+    //     inputName: 'rate-user',
+    // });
+    // $("#rating-game").emojiRating({
+    //     fontSize: 32,
+    //     emoji: 'star',
+    //     inputName: 'rate-game'
+    // });
+
+    $('#rating-user').stars({
+        stars: 5
+    });
+    $('#rating-game').stars();
+    $('#rating-button').trigger('click');
 
 });
+
 
 function newGame() {
     for (let i = 1; i <= dice_count; i++) {
@@ -86,6 +111,13 @@ function hold() {
 
 
 function showData(data) {
+    if(myUserID === data.player1_id) {
+        $('#user1').val(data.player1_id);
+        $('#user2').val(data.player2_id);
+    }else{
+        $('#user1').val(data.player2_id);
+        $('#user2').val(data.player1_id);
+    }
     if (data.winner !== null) {
         let winner = data.winner ? 1 : 2;
         $('#rollDice').off('click');
@@ -93,6 +125,7 @@ function showData(data) {
         let name = $(`.player${winner}`).find('.playerName');
         name.html('Winner!');
         name.css('color', 'red');
+
         return;
     }
     // console.log(data);

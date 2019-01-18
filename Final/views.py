@@ -27,7 +27,6 @@ class HomePage(APIView):
                                              'maxOnline': 0,
                                              'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0]})
 
-
 class GameView(APIView):
     # permission_classes = (IsAuthenticated,)
     authentication_classes = (Authenticate,)
@@ -43,15 +42,18 @@ class GameView(APIView):
         if not game:
             raise NotFound('Game not found!')
         if len(non_started_games) > 0:
-            cur_game = non_started_games.pop()
+            cur_game: GameData = non_started_games.pop()
             cur_game.turn = True
+            cur_game.player2_id = request.user.id
             return render(request, 'game_main.html',
-                          {'game': game, 'game_id': cur_game.id, 'myTurn': 2})
+                          {'game': game, 'game_id': cur_game.id, 'myTurn': 2, 'myUserID': request.user.id})
 
         new_game = GameData(game.dice_count, game.max_score, [int(x) for x in game.hold.split(',')])
+        new_game.player1_id = request.user.id
         games[new_game.id] = new_game
         non_started_games.append(new_game)
-        return render(request, 'game_main.html', {'game': game, 'game_id': new_game.id, 'myTurn': 1})
+        return render(request, 'game_main.html',
+                      {'game': game, 'game_id': new_game.id, 'myTurn': 1, 'myUserID': request.user.id})
 
     @staticmethod
     def post(request: Request):
@@ -93,7 +95,6 @@ class GameView(APIView):
                 game.winner = False
         return Response(json.dumps(game.__dict__))
 
-
 class CreateGame(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (Authenticate,)
@@ -111,14 +112,12 @@ class CreateGame(APIView):
         game.save()
         return Response('Done!')
 
-
 class RateAPI(ListAPIView):
     serializer_class = GameRateSerializer
     model = Game
 
     def get_queryset(self):
         return Game.objects.values('rate', 'name')
-
 
 class GamePlayedCountAPI(ListAPIView):
     serializer_class = GamePlayedCountSerializer
@@ -127,14 +126,12 @@ class GamePlayedCountAPI(ListAPIView):
     def get_queryset(self):
         return Game.objects.values('play_count', 'name')
 
-
 class BestGameAddedAPI(ListAPIView):
     serializer_class = GameSerializer
     model = Game
 
     def get_queryset(self):
         return Game.objects.all().order_by('creation_date', 'rate')
-
 
 class CommentAPI(ListCreateAPIView):
     authentication_classes = (Authenticate,)

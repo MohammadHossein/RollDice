@@ -52,3 +52,5 @@ class GameData:
         self.player2_total = 0
         self.winner = None
         self.hold = hold
+        self.player1_id = ''
+        self.player2_id = ''
