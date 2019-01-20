@@ -54,3 +54,4 @@ class GameData:
         self.hold = hold
         self.player1_id = ''
         self.player2_id = ''
+        self.started = False

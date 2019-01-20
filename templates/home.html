@@ -1,5 +1,10 @@
 {% extends 'index.html' %}
 {% load static %}
+
+{% block style %}
+    <link href="{% static 'datatable/datatables.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block header %}
     <h1 class="page-header">HomePage</h1>
 {% endblock header %}
@@ -44,12 +49,12 @@
                                     </div>
                                     <div class="panel-body">
                                         <p>{{ maxOnline }}</p>
-{#                                        <p>{{ bestGame.rate }}</p>#}
+                                        {#                                        <p>{{ bestGame.rate }}</p>#}
                                     </div>
                                     <div class="panel-footer"></div>
                                 </div>
                             </div>
-{#                            <p>{{ maxOnline }}</p>#}
+                            {#                            <p>{{ maxOnline }}</p>#}
                         </div>
                         <div class="item">
                             <div class="item active">
@@ -102,6 +107,90 @@
             </div>
             <!-- /.panel-body -->
         </div>
+        {% if isAdmin %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-sliders fa-fw"></i> User Comments
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- slider -->
+                    <form action="" method="post">
+                        <table class="table table-striped table-bordered" id="user-comment-table">
+                            <thead>
+                            <tr>
+                                <th>Comment Text</th>
+                                <th>User</th>
+                                <th>To User</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for comment in user_comment %}
+                                <tr>
+                                    <td>{{ comment.text }}</td>
+                                    <td>{{ comment.user }}</td>
+                                    <td>{{ comment.to_user }}</td>
+                                    <td>
+                                        {% if comment.accept %}
+                                            <input type="checkbox" class="form-control" name="user_comment"
+                                                   value="{{ comment.id }}"
+                                                   checked>
+                                        {% else %}
+                                            <input type="checkbox" class="form-control" name="user_comment"
+                                                   value="{{ comment.id }}">
+                                        {% endif %}
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary pull-right">Save Changes!</button>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-sliders fa-fw"></i> Game Comments
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- slider -->
+                    <form action="{% url 'accept-game-comment' %}" method="post">
+                        <table class="table table-striped table-bordered" id="game-comment-table">
+                            <thead>
+                            <tr>
+                                <th>Comment Text</th>
+                                <th>User</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for comment in game_comment %}
+                                <tr>
+                                    <td>{{ comment.text }}</td>
+                                    <td>{{ comment.user }}</td>
+                                    <td>
+                                        {% if comment.accept %}
+                                            <input type="checkbox" class="form-control" name="game_comment"
+                                                   value="{{ comment.id }}" checked>
+                                        {% else %}
+                                            <input type="checkbox" class="form-control" name="game_comment"
+                                                   value="{{ comment.id }}">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary pull-right">Save Changes!</button>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+        {% endif %}
     </div>
     <!-- /.col-lg-8 -->
     <div class="col-lg-4">
@@ -133,6 +222,7 @@
 
 {% block script %}
     <script src="{% static '/angular/angular.js' %}"></script>
+    <script src="{% static '/datatable/datatables.js' %}"></script>
     <script type="text/javascript">
         {#var data_slider = [#}
         {#    {#}
@@ -148,13 +238,9 @@
         {#app.config(['$interpolateProvider', function ($interpolateProvider) {#}
         {#    $interpolateProvider.startSymbol('{a');#}
         {#    $interpolateProvider.endSymbol('a}');#}
-        {#}])
-        ;
-        #}
+        {# }]);#}
         {#app.controller('slider_controller', function () {#}
         {#    this.slider_data = data_slider;#}
-        {#})
-        ;
-        #}
+        {# });#}
     </script>
 {% endblock %}

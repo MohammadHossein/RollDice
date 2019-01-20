@@ -17,13 +17,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
+
 onlineUsers = set()
 games = {}
 non_started_games = []
 
+
 urlpatterns = [
                   # path('admin/', admin.site.urls),
                   path('users/', include('User.urls')),
+                  path('friendship/', include('friendship.urls')),
                   path('', include('Final.urls')),
               ] \
               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

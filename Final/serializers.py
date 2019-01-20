@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, BaseSerializer
 
-from Final.models import Game, GameComment
+from Final.models import Game, GameComment, UserComment
 
 
 class GameSerializer(ModelSerializer):
@@ -41,9 +41,28 @@ class GamePlayedCountSerializer(ModelSerializer):
 
 
 class GameCommentSerializer(serializers.ModelSerializer):
-    def validate_user(self, data):
-        return self.context['request'].user
-
     class Meta:
         model = GameComment
         fields = ('text', 'rate', 'user', 'game')
+
+
+class UserCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserComment
+        fields = ('text', 'rate', 'user', 'to_user')
+
+
+class GameAcceptCommentSerializer(ModelSerializer):
+    game_comment = serializers.ListField()
+
+    class Meta:
+        model = GameComment
+        fields = ('game_comment',)
+
+
+class UserAcceptCommentSerializer(ModelSerializer):
+    user_comment = serializers.ListField()
+
+    class Meta:
+        model = UserComment
+        fields = ('user_comment',)

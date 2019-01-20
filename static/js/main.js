@@ -46,8 +46,11 @@ $(function () {
     }
 });
 
-
+let user_comment_table;
+let game_comment_table;
 $(document).ready(function () {
+    user_comment_table = $('#user-comment-table').DataTable();
+    game_comment_table = $('#game-comment-table').DataTable();
     // $.ajax({
     //     url: '/best_game',
     //     type: 'GET',

@@ -1,4 +1,11 @@
 let turn = 1;
+let waiting = 0;
+let started = false;
+let user_rating = 0;
+let game_rating = 0;
+let opponent_user_id = 0;
+let db_game_id = 0;
+let winner = null;
 $(document).ready(function () {
     // $('#maxScore').hide();
     newGame();
@@ -11,29 +18,23 @@ $(document).ready(function () {
     });
     interval();
     const urlParams = new URLSearchParams(window.location.search);
-    const game_idd = urlParams.get('id');
-    $('#game-id').val(game_idd);
-
-    //
-    // $('#comment-modal').on('shown.bs.modal', function () {
-    //     $('#myInput').focus()
-    // })
-    // $("#rating-user").emojiRating({
-    //     fontSize: 32,
-    //     emoji: 'poo',
-    //     inputName: 'rate-user',
-    // });
-    // $("#rating-game").emojiRating({
-    //     fontSize: 32,
-    //     emoji: 'star',
-    //     inputName: 'rate-game'
-    // });
-
+    db_game_id = urlParams.get('id');
     $('#rating-user').stars({
-        stars: 5
+        stars: 5,
+        click: function (i) {
+            user_rating = i;
+        }
+
     });
-    $('#rating-game').stars();
-    $('#rating-button').trigger('click');
+    $('#rating-game').stars({
+        stars: 5,
+        click: function (i) {
+            game_rating = i;
+        }
+    });
+
+    $('#game-comment-button').on('click', sendGameComment);
+    $('#user-comment-button').on('click', sendUserComment);
 
 });
 
@@ -111,21 +112,20 @@ function hold() {
 
 
 function showData(data) {
-    if(myUserID === data.player1_id) {
-        $('#user1').val(data.player1_id);
-        $('#user2').val(data.player2_id);
-    }else{
-        $('#user1').val(data.player2_id);
-        $('#user2').val(data.player1_id);
+    started = data.started;
+    if (myUserID === data.player1_id) {
+        opponent_user_id = data.player2_id;
+    } else {
+        opponent_user_id = data.player1_id;
     }
     if (data.winner !== null) {
-        let winner = data.winner ? 1 : 2;
+        winner = data.winner ? 1 : 2;
         $('#rollDice').off('click');
         $('#hold').off('click');
         let name = $(`.player${winner}`).find('.playerName');
         name.html('Winner!');
         name.css('color', 'red');
-
+        $('#game-comment-modal').modal({backdrop: 'static', keyboard: false});
         return;
     }
     // console.log(data);
@@ -169,7 +169,61 @@ function update(action) {
     })
 }
 
+function showTimeout() {
+    $.ajax({
+        url: '/end_game?id=' + game_id,
+        type: 'GET',
+        success: function (e) {
+            $('#timeout-modal').modal({backdrop: 'static', keyboard: false})
+        },
+        error: function (e) {
+            waiting = 0;
+            setTimeout(interval, 1000);
+        }
+    });
+}
+
 function interval() {
     update();
-    setTimeout(interval, 1000);
+    waiting++;
+    if ((!started) && waiting > 1) {
+        showTimeout();
+        return;
+    }
+    if (winner === null)
+        setTimeout(interval, 1000);
+}
+
+function sendGameComment() {
+    $.ajax({
+        url: '/game_comment',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            text: $('#game-comment-input').val(),
+            rate: game_rating,
+            game: db_game_id,
+            user: myUserID
+        })
+    });
+    $('#game-comment-modal').modal('hide');
+    $('#user-comment-modal').modal({backdrop: 'static', keyboard: false});
+}
+
+function sendUserComment() {
+    $.ajax({
+        url: '/user_comment',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            text: $('#user-comment-input').val(),
+            rate: user_rating,
+            game: db_game_id,
+            user: myUserID,
+            to_user: opponent_user_id
+        }),
+        success: function () {
+            window.location.replace('/');
+        }
+    });
 }
