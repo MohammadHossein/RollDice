@@ -4,7 +4,7 @@ let started = false;
 let user_rating = 0;
 let game_rating = 0;
 let opponent_user_id = 0;
-let db_game_id = 0;
+let gid = 0;
 let winner = null;
 $(document).ready(function () {
     // $('#maxScore').hide();
@@ -18,7 +18,7 @@ $(document).ready(function () {
     });
     interval();
     const urlParams = new URLSearchParams(window.location.search);
-    db_game_id = urlParams.get('id');
+    gid = urlParams.get('id');
     $('#rating-user').stars({
         stars: 5,
         click: function (i) {
@@ -110,7 +110,8 @@ function update(action) {
         contentType: 'application/json',
         data: JSON.stringify({
             game_id: game_id,
-            action: action ? action : " "
+            action: action ? action : " ",
+            gid: gid
         }),
         success: function (data) {
             showData(JSON.parse(data));
@@ -120,7 +121,7 @@ function update(action) {
 
 function showTimeout() {
     $.ajax({
-        url: '/end_game?id=' + game_id + '&gid=' + db_game_id,
+        url: '/end_game?id=' + game_id + '&gid=' + gid ,
         type: 'GET',
         success: function (e) {
             $('#timeout-modal').modal({backdrop: 'static', keyboard: false})
@@ -151,7 +152,7 @@ function sendGameComment() {
         data: JSON.stringify({
             text: $('#game-comment-input').val(),
             rate: game_rating,
-            game: db_game_id,
+            game: gid,
             user: myUserID
         })
     });
@@ -167,7 +168,7 @@ function sendUserComment() {
         data: JSON.stringify({
             text: $('#user-comment-input').val(),
             rate: user_rating,
-            game: db_game_id,
+            game: gid,
             user: myUserID,
             to_user: opponent_user_id
         }),

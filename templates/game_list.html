@@ -1,27 +1,29 @@
 {% extends 'index.html' %}
 
 {% block header %}
-    <h1>Create your own game!</h1>
+    <h1>Games</h1>
 {% endblock %}
 
 
 {% block body %}
     <div class="panel-body col-sm-7">
-        <div class="col-lg-4">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    Green Panel
+        {% for game in games %}
+            <div class="col-lg-4">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        {{ game.name }}
+                    </div>
+                    <div class="panel-body">
+                        <div> Rate:{{ game.rate }}</div>
+                        <div> Created At:{{ game.creation_date }}</div>
+                    </div>
+                    {#                    <div class="panel-footer">#}
+                    {#                        Panel Footer#}
+                    {#                    </div>#}
                 </div>
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices
-                        accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                </div>
-                <div class="panel-footer">
-                    Panel Footer
-                </div>
+                <!-- /.col-lg-4 -->
             </div>
-            <!-- /.col-lg-4 -->
-        </div>
+        {% endfor %}
 
     </div>
 {% endblock body %}
