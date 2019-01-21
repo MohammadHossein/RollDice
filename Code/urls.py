@@ -20,7 +20,7 @@ from django.urls import path, include
 
 onlineUsers = set()
 games = {}
-non_started_games = []
+non_started_games = {}
 
 
 urlpatterns = [

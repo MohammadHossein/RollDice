@@ -206,13 +206,15 @@
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <i class="fa fa-user fa-fw"></i> {{ onlineUser.username }}
-                            <form action="{% url 'friendship_add_friend' to_username=onlineUser.username %}"
-                                  method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="friend" value="{{ onlineUser.id }}">
-                                <button type="submit" class="btn btn-primary">Add Friend!
-                                </button>
-                            </form>
+                            {% if curUser.username != onlineUser.username %}
+                                <form action="{% url 'friendship_add_friend' to_username=onlineUser.username %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="friend" value="{{ onlineUser.id }}">
+                                    <button type="submit" class="btn btn-primary">Add Friend!
+                                    </button>
+                                </form>
+                            {% endif %}
                             {#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
                             {#                                    </span>#}
                         </a>
@@ -255,10 +257,6 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <h1>friends</h1>
-                {% friends request.user %}
-                <h1>req</h1>
-                {#                {% friend_requests request.user %}#}
                 {% for req in friendship %}
                     <h1>{{ req.from_user.username }}</h1>
                     <form method="post" action="{% url 'friendship_accept' friendship_request_id=req.id %}">

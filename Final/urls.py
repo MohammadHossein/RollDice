@@ -1,7 +1,7 @@
 from django.urls import path
 
 from Final.views import HomePage, CreateGame, GameView, RateAPI, BestGameAddedAPI, GamePlayedCountAPI, \
-    AcceptGameComment, AcceptUserComment, EndGameAPI, GameCommentAPI, UserCommentAPI
+    AcceptGameComment, AcceptUserComment, EndGameAPI, GameCommentAPI, UserCommentAPI,UserProfile
 
 urlpatterns = [
     path('', HomePage.as_view(), name='homepage'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('accept_game_comment', AcceptGameComment.as_view(), name='accept-game-comment'),
     path('accept_user_comment', AcceptUserComment.as_view(), name='accept-user-comment'),
     path('end_game', EndGameAPI.as_view(), name='end_game'),
+    path('profile', UserProfile.as_view(), name='profile'),
     # path('profile/<str:username>', temp, name='end_game'),
 ]

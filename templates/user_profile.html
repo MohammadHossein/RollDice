@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block body %}
+    <div id="user-profile-2" class="user-profile">
+        <div class="tab-content no-border padding-24">
+            <div id="home" class="tab-pane in active">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3 center">
+							<span class="profile-picture">
+                                {% if user.photo %}
+                                    <img class="editable img-responsive" alt=" Avatar" id="avatar2"
+                                         src="{{ user.photo.url }}">
+                                {% else %}
+                                    <img class="editable img-responsive" alt=" Avatar" id="avatar2"
+                                         src="{% static '/img/avatar.png' %}">
+                                {% endif %}
+							</span>
+
+                        <div class="space space-4"></div>
+
+                        {#                        <a href="#" class="btn btn-sm btn-block btn-success">#}
+                        {#                            <i class="ace-icon fa fa-plus-circle bigger-120"></i>#}
+                        {#                            <span class="bigger-110">Add as a friend</span>#}
+                        {#                        </a>#}
+
+                        <form action="{% url 'friendship_add_friend' to_username=user.username %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="friend" value="{{ user.id }}">
+                            <button type="submit" class="btn btn-sm btn-block btn-success">
+                                <i class="ace-icon fa fa-plus-circle bigger-120"></i>
+                                <span class="bigger-110">Add as a friend</span>
+                            </button>
+                        </form>
+                    </div><!-- /.col -->
+
+                    <div class="col-xs-12 col-sm-9">
+                        <h4 class="blue">
+                            <span class="middle">{{ user.first_name }} {{ user.last_name }}</span>
+                        </h4>
+
+                        <div class="profile-user-info">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Username</div>
+
+                                <div class="profile-info-value">
+                                    <span>{{ user.username }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr hr-8 dotted"></div>
+
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+
+                <div class="space-20"></div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

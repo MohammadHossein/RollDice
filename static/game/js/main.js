@@ -120,7 +120,7 @@ function update(action) {
 
 function showTimeout() {
     $.ajax({
-        url: '/end_game?id=' + game_id,
+        url: '/end_game?id=' + game_id + '&gid=' + db_game_id,
         type: 'GET',
         success: function (e) {
             $('#timeout-modal').modal({backdrop: 'static', keyboard: false})
