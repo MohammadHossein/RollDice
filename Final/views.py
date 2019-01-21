@@ -29,7 +29,7 @@ class HomePage(APIView):
         return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user,
                                              'games': Game.objects.all(),
                                              'bestGame': Game.objects.values('rate', 'name').order_by('-rate')[0],
-                                             'maxOnline': max([len(x) for x in games]),
+                                             'maxOnline':0, #max([len(x) for x in games]),
                                              'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0],
                                              'isAdmin': request.auth, 'user_comment': UserComment.objects.all(),
                                              'game_comment': GameComment.objects.all(),
