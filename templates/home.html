@@ -205,16 +205,21 @@
                 {% for onlineUser in onlineUsers %}
                     <div class="list-group">
                         <a href="#" class="list-group-item">
-                            <i class="fa fa-user fa-fw"></i> {{ onlineUser.username }}
-                            {% if curUser.username != onlineUser.username %}
-                                <form action="{% url 'friendship_add_friend' to_username=onlineUser.username %}"
-                                      method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="friend" value="{{ onlineUser.id }}">
-                                    <button type="submit" class="btn btn-primary">Add Friend!
-                                    </button>
-                                </form>
+                            {% if onlineUser in friends %}
+                                <i class="fa fa-user fa-fw"></i> <span class="friend">{{ onlineUser.username }}</span>
+                            {% else %}
+                                <i class="fa fa-user fa-fw"></i> {{ onlineUser.username }}
+                                {% if curUser.username != onlineUser.username %}
+                                    <form action="{% url 'friendship_add_friend' to_username=onlineUser.username %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="friend" value="{{ onlineUser.id }}">
+                                        <button type="submit" class="btn btn-primary">Add Friend!
+                                        </button>
+                                    </form>
+                                {% endif %}
                             {% endif %}
+
                             {#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
                             {#                                    </span>#}
                         </a>

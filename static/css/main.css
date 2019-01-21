@@ -432,3 +432,8 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+.friend {
+  color: tomato;
+  font-weight: bold;
+}

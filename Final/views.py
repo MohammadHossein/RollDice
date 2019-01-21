@@ -29,7 +29,7 @@ class HomePage(APIView):
         return render(request, 'home.html', {'onlineUsers': onlineUsers, 'curUser': request.user,
                                              'games': Game.objects.all(),
                                              'bestGame': Game.objects.values('rate', 'name').order_by('-rate')[0],
-                                             'maxOnline':0, #max([len(x) for x in games]),
+                                             'maxOnline': 0,  # max([len(x) for x in games]),
                                              'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0],
                                              'isAdmin': request.auth, 'user_comment': UserComment.objects.all(),
                                              'game_comment': GameComment.objects.all(),
@@ -197,13 +197,28 @@ class EndGameAPI(APIView):
 
     @staticmethod
     def post(request: Request):
-        return Response()
-
-
-# # class Friend
-# @APIView(['GET'])
-# def temp(request,username):
-#     username
+        gid = request.data.get('gid')
+        game_id = request.data.get('id')
+        print(request.data,gid,game_id)
+        game_db = Game.objects.get(id=gid)
+        game: GameData = games[gid][game_id]
+        game_db.max_score = max(game_db.max_score, game.player1_total, game.player2_total)
+        game_db.average_score = (game_db.average_score_person_count * game_db.average_score +
+                                 max(game.player2_total, game.player1_total)) / (game_db.average_score_person_count + 1)
+        game_db.average_score_person_count = game_db.average_score_person_count + 1
+        game_db.save()
+        user = User.objects.get(id=game.player1_id)
+        user.average_game_score = (user.average_game_score * user.average_game_score_count + game.player1_total) / (
+                    user.average_game_score_count + 1)
+        user.games_count = user.games_count + 1
+        user.save()
+        user = User.objects.get(id=game.player2_id)
+        user.average_game_score = (user.average_game_score * user.average_game_score_count + game.player2_total) / (
+                user.average_game_score_count + 1)
+        user.games_count = user.games_count + 1
+        user.save()
+        del games[gid][game_id]
+        return Response('Done')
 
 
 class UserProfile(APIView):
