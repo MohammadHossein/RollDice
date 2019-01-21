@@ -15,4 +15,5 @@ urlpatterns = [
     path('accept_game_comment', AcceptGameComment.as_view(), name='accept-game-comment'),
     path('accept_user_comment', AcceptUserComment.as_view(), name='accept-user-comment'),
     path('end_game', EndGameAPI.as_view(), name='end_game'),
+    # path('profile/<str:username>', temp, name='end_game'),
 ]

@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load friendshiptags %}
 
 {% block style %}
     <link href="{% static 'datatable/datatables.css' %}" rel="stylesheet">
@@ -205,11 +206,65 @@
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <i class="fa fa-user fa-fw"></i> {{ onlineUser.username }}
+                            <form action="{% url 'friendship_add_friend' to_username=onlineUser.username %}"
+                                  method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="friend" value="{{ onlineUser.id }}">
+                                <button type="submit" class="btn btn-primary">Add Friend!
+                                </button>
+                            </form>
                             {#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
                             {#                                    </span>#}
                         </a>
                     </div>
                     <!-- /.list-group -->
+                {% endfor %}
+            </div>
+
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i> Friends
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                {#                {% friends request.user %}#}
+                {% for friend in friends %}
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-user fa-fw"></i> {{ friend.username }}
+                            {#                            <span class="pull-right text-muted small"><em>4 minutes ago</em>#}
+                            {#                                    </span>#}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i> Friend Requests
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <h1>friends</h1>
+                {% friends request.user %}
+                <h1>req</h1>
+                {#                {% friend_requests request.user %}#}
+                {% for req in friendship %}
+                    <h1>{{ req.from_user.username }}</h1>
+                    <form method="post" action="{% url 'friendship_accept' friendship_request_id=req.id %}">
+                        {% csrf_token %}
+                        <button type="submit">accept</button>
+                    </form>
                 {% endfor %}
             </div>
 

@@ -4,6 +4,7 @@ import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 # Create your views here.
+from friendship.models import FriendshipRequest
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.request import Request
@@ -30,11 +31,12 @@ class HomePage(APIView):
                                              'maxOnline': 0,
                                              'bestNewGame': Game.objects.all().order_by('-creation_date', '-rate')[0],
                                              'isAdmin': request.auth, 'user_comment': UserComment.objects.all(),
-                                             'game_comment': GameComment.objects.all()})
+                                             'game_comment': GameComment.objects.all(),
+                                             'friendship': FriendshipRequest.objects.filter(to_user=request.user.id)})
 
 
 class GameView(APIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     authentication_classes = (Authenticate,)
 
     @staticmethod
@@ -182,9 +184,13 @@ class EndGameAPI(APIView):
     def get(request: Request):
         non_started_games.pop()
         del games[request.query_params.get('id')]
-        print(games)
         return Response("timeout")
 
     @staticmethod
     def post(request: Request):
         return Response()
+
+# # class Friend
+# @APIView(['GET'])
+# def temp(request,username):
+#     username

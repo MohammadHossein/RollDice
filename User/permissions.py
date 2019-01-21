@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.authtoken.models import Token
@@ -38,6 +39,7 @@ class Authenticate(BaseAuthentication):
         except Exception:
             return None
         onlineUsers.add(user)
+        login(request,user)
         return user, user.isAdmin
 
 

@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from Code.urls import onlineUsers
 from User.models import User
-from User.permissions import IsAuthenticated
+from User.permissions import Authenticate
 from User.serializers import UserLoginSerializer, UserRegisterSerializer
 
 
@@ -38,14 +38,16 @@ class Login(ObtainAuthToken):
 
 
 class LogOut(APIView):
+    authentication_classes = (Authenticate,)
+
     @staticmethod
     def get(request):
         try:
             Token.objects.get(user=request.user).delete()
             onlineUsers.remove(request.user)
             return Response({'message': 'You have successfully logged out!'})
-        except:
-            return Response({'message': 'Error Logout'})
+        except Exception as e:
+            return Response(e.args)
 
 
 class SignUp(APIView):
@@ -56,4 +58,3 @@ class SignUp(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return HttpResponseRedirect(redirect_to=reverse('login'))
-
